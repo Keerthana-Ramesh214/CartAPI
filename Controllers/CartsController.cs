@@ -107,24 +107,45 @@ namespace EcommerceCartAPI.Controllers
             var update =
          _context.Carts.Where(x => x.ProductId == Prdid && x.UserId == userId)
           .FirstOrDefault();
-
-
-            if (update != null && update.Quantity == 1)
+            try
             {
-                _context.Carts.Remove(cart);
-                _context.SaveChanges();
-                return "success";
+
+                if (update != null && update.Quantity == 1)
+                {
+                    _context.Carts.Remove(cart);
+                    _context.SaveChanges();
+                    JsonObj jsobj = new JsonObj();
+                    jsobj.result = "Success";
+                    string output = JsonConvert.SerializeObject(jsobj);
+                    JsonObj deserializedProduct = JsonConvert.DeserializeObject<JsonObj>(output);
+                    return Ok(deserializedProduct);
+                }
+                else
+                {
+                    if (update == null)
+                    {
+                        return BadRequest();
+                    }
+                    else
+                    {
+                        cart.Quantity = update.Quantity - 1;
+                        cart.SubTotal = cart.Quantity * cart.Price;
+                        var updatequery = _context.Carts.Where(x => x.ProductId == cart.ProductId && x.UserId == userId)
+                      .FirstOrDefault();
+                        updatequery.Quantity = cart.Quantity;
+                        updatequery.SubTotal = cart.SubTotal;
+                        _context.SaveChanges();
+                        JsonObj jsobj = new JsonObj();
+                        jsobj.result = "Success";
+                        string output = JsonConvert.SerializeObject(jsobj);
+                        JsonObj deserializedProduct = JsonConvert.DeserializeObject<JsonObj>(output);
+                        return Ok(deserializedProduct);
+                    }
+                }
             }
-            else
+            catch(Exception e)
             {
-                cart.Quantity = update.Quantity - 1;
-                cart.SubTotal = cart.Quantity * cart.Price;
-                var updatequery = _context.Carts.Where(x => x.ProductId == cart.ProductId && x.UserId == userId)
-              .FirstOrDefault();
-                updatequery.Quantity = cart.Quantity;
-                updatequery.SubTotal = cart.SubTotal;
-                _context.SaveChanges();
-                return "success";
+                return BadRequest();
             }
 
         }
