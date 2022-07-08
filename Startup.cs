@@ -28,8 +28,10 @@ namespace EcommerceCartAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddDbContext<ECommerceContext>(options =>
-       options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,7 +50,7 @@ namespace EcommerceCartAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(options => options.WithOrigins("http://localhost:44331/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             app.UseRouting();
 
             app.UseAuthorization();

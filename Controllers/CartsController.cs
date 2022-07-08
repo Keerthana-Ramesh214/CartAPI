@@ -5,13 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EcommerceCartAPI.Controllers
 {
+    public class JsonObj
+    {
+        public string result { get; set; }
+    }
     [Route("api/[controller]")]
     [ApiController]
+    
     public class CartsController : ControllerBase
     {
         private readonly ECommerceContext _context;
@@ -20,25 +26,35 @@ namespace EcommerceCartAPI.Controllers
             _context = context;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<Cart>> Get(int userId)
+        public async Task<ActionResult<IEnumerable<Cart>>> Get(int userId)
         {
             List<Cart> carts = _context.Carts.Where(x => x.UserId == userId).ToList();
             return carts;
         }
-
+        [HttpGet("getcount")]
+        public async Task<ActionResult<int>> getcountItemsofCart(int userId)
+        {
+            List<Cart> carts = _context.Carts.Where(x => x.UserId == userId).ToList();
+            int? totalCartproducts=0;
+            foreach(var item in carts)
+            {
+                totalCartproducts+=Convert.ToInt32(item.Quantity);
+            }
+            return totalCartproducts;
+        }
         [HttpPost]
-        public string insert(int Prdid, int userId)
+        public async Task<ActionResult> insert(int Prdid, int userId)
         {
             if (Prdid == 0)
             {
-                return "";
+                return NotFound();
             }
             try
             {
                 var product = _context.Products.Find(Prdid);
                 if (product == null)
                 {
-                    return "";
+                    return NotFound();
                 }
                 Cart c = new Cart();
                 c.UserId = userId;
@@ -54,7 +70,11 @@ namespace EcommerceCartAPI.Controllers
                     c.SubTotal = c.Price * c.Quantity;
                     _context.Carts.Add(c);
                     _context.SaveChanges();
-                    return c.ProductName+" added";
+                    JsonObj jsobj = new JsonObj();
+                    jsobj.result = c.ProductName + " added";
+                    string output = JsonConvert.SerializeObject(jsobj);
+                    JsonObj deserializedProduct = JsonConvert.DeserializeObject<JsonObj>(output);
+                    return Ok(deserializedProduct);
                 }
                 else
                 {
@@ -65,19 +85,24 @@ namespace EcommerceCartAPI.Controllers
                     updatequery.Quantity = c.Quantity;
                     updatequery.SubTotal = c.SubTotal;
                     _context.SaveChanges();
-                    return c.ProductName+" already exist so Quantity increased";
+                    JsonObj jsobj = new JsonObj();
+                    jsobj.result = c.ProductName + " already exist so Quantity increased";
+                    string output = JsonConvert.SerializeObject(jsobj);
+                    JsonObj deserializedProduct = JsonConvert.DeserializeObject<JsonObj>(output);
+                    return Ok(deserializedProduct);
                 }
             }
             catch (Exception e)
             {
-                return "invalid";
+                return BadRequest();
             }
         }
         //Removing 
+        [Route("Remove")]
         [HttpPut]
-        public string Remove(int Prdid, int userId)
+        public async Task<ActionResult<string>> Remove(int Prdid, int userId)
         {
-            var cart = _context.Carts.Where(x => x.ProductId == Prdid && x.UserId == userId).FirstOrDefault(); ;
+            var cart = _context.Carts.Where(x => x.ProductId == Prdid && x.UserId == userId).FirstOrDefault(); 
 
             var update =
          _context.Carts.Where(x => x.ProductId == Prdid && x.UserId == userId)
@@ -87,7 +112,7 @@ namespace EcommerceCartAPI.Controllers
             if (update != null && update.Quantity == 1)
             {
                 _context.Carts.Remove(cart);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return "success";
             }
             else
