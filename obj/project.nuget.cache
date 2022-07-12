@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ylY8x93xqwn+i1eKUVshO8IXQ04aAMz+xdRRn/bEqCKF07JVeG0Zlt0O2V7chB+LH3KWAy8aN/UnCRE1VmTb2g==",
+  "dgSpecHash": "ibMM3ZY8M5GgEd9o1z+Iyf02KddT86LfK9L2y/oVPJmcoDpChkNqhiHsMVny47WARpvLXIdvfRQt/NFhXtzWDw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\source\\repos\\EcommerceCartAPI\\EcommerceCartAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\bcrypt.net-next\\4.0.0\\bcrypt.net-next.4.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",

@@ -48,7 +48,12 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EcommerceCartAPI v1"));
             }
-
+            ECommerceContext _context = new();
+            foreach (var a in _context.Users)
+            {
+                a.IsLoggedIn = false;
+            }
+            _context.SaveChanges();
             app.UseHttpsRedirection();
             app.UseCors(options => options.WithOrigins("http://localhost:44331/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             app.UseRouting();

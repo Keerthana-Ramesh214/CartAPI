@@ -343,10 +343,6 @@ namespace EcommerceCartAPI.Models
                 entity.Property(e => e.Mobile).HasMaxLength(10);
 
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
-
-                entity.Property(e => e.Password)
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<UserAddress>(entity =>

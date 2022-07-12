@@ -132,3 +132,5 @@ C:\Users\Admin\source\repos\EcommerceCartAPI\bin\Debug\net5.0\zh-Hans\Microsoft.
 C:\Users\Admin\source\repos\EcommerceCartAPI\bin\Debug\net5.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Admin\source\repos\EcommerceCartAPI\bin\Debug\net5.0\runtimes\win-arm\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Users\Admin\source\repos\EcommerceCartAPI\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
+C:\Users\Admin\source\repos\EcommerceCartAPI\obj\Debug\net5.0\EcommerceCartAPI.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\EcommerceCartAPI\bin\Debug\net5.0\BCrypt.Net-Next.dll
